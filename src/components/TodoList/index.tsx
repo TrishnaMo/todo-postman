@@ -1,19 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import Todo from "../Todo/index";
-import { TodoInfo as TodoProps } from "../Todo/index";
+import { TodoContext } from "../TodoContext/TodoContext";
 
-interface Props {
-  todoList: TodoProps[];
-  onDelete: (todo: TodoProps) => void;
-}
 
-const TodoList: React.FC<Props> = ({ todoList, onDelete }) => {
+const TodoList: React.FC = () => {
+  useEffect(() => {
+    console.log("Loading Todolist: consumer")
+  }, [])
+  const {todos} = useContext(TodoContext)
+  useEffect(() => {
+    console.log("Refresh Todolist: consumer")
+  }, [todos])
   return (
     <>
       <ul>
-        {todoList.map((todo) => (
+        {todos.map((todo) => (
           <div data-testid={todo.id} key={todo.id}>
-            <Todo todo={todo} onDelete={onDelete} />
+            <Todo todo={todo} />
           </div>
         ))}
       </ul>

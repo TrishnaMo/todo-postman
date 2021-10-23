@@ -1,13 +1,14 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
-import { TodoInfo as TodoProps } from "../Todo/index";
+import React, { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
+import { TodoContext } from "../TodoContext/TodoContext";
 
-interface Props {
-  onAdd: (todo: Omit<TodoProps, "id">) => void;
-}
-
-const TodoForm: React.FC<Props> = ({ onAdd }) => {
+const TodoForm: React.FC = () => {
   const [todo, setTodo] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
+  const { addTodo } = useContext(TodoContext);
+
+  useEffect(() => {
+    console.log("Loading Todoform - consumer")
+  }, [])
 
   const changeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const todoText = event.target.value;
@@ -21,7 +22,7 @@ const TodoForm: React.FC<Props> = ({ onAdd }) => {
     const newTodo = {
       title: todo,
     };
-    onAdd(newTodo);
+    addTodo(newTodo);
     setTodo("");
     setIsDisabled(true);
   };
