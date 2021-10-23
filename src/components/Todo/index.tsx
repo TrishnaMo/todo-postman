@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { TodoContext } from "../TodoContext";
 
 export interface TodoInfo {
   id: number;
@@ -7,14 +8,14 @@ export interface TodoInfo {
 
 export interface Props {
   todo: TodoInfo;
-  onDelete: (todo: TodoInfo) => void;
 }
 
-const Todo: React.FC<Props> = ({ todo, onDelete }) => {
+const Todo: React.FC<Props> = ({ todo }) => {
+  const value = useContext(TodoContext);
   return (
     <>
       <div>{todo.title}</div>
-      <button type="submit" onClick={() => onDelete(todo)}>
+      <button type="submit" onClick={() => value.deleteTodo(todo)}>
         -
       </button>
     </>
