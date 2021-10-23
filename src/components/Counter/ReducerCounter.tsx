@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { createContext, useContext, useReducer } from "react";
 
 interface CounterStore {
   count: number;
@@ -23,37 +23,53 @@ const reducer = (state: CounterStore, action: CounterAction) => {
   }
 };
 
-interface ButtonProps {
-  //   dispatch: (action: CounterAction) => void;
-  dispatch: React.Dispatch<CounterAction>;
-}
+// interface ButtonProps {
+//   //   dispatch: (action: CounterAction) => void;
+//   dispatch: React.Dispatch<CounterAction>;
+// }
 
-const CountDisplay: React.FC<{ store: CounterStore }> = ({ store }) => {
-  return <div>{store.count}</div>;
+const CountDisplay: React.FC = () => {
+  const {
+    store: { count },
+  } = useContext(StoreContext);
+  return <div>{count}</div>;
 };
 
-const IncrementButton: React.FC<ButtonProps> = ({ dispatch }) => {
+const IncrementButton: React.FC = () => {
+  const { dispatch } = useContext(StoreContext);
   return <button onClick={() => dispatch({ type: "increment" })}>+</button>;
 };
 
-const DecrementButton: React.FC<ButtonProps> = ({ dispatch }) => {
+const DecrementButton: React.FC = () => {
+  const { dispatch } = useContext(StoreContext);
   return <button onClick={() => dispatch({ type: "decrement" })}>-</button>;
 };
 
-const ResetButton: React.FC<ButtonProps> = ({ dispatch }) => {
+const ResetButton: React.FC = () => {
+  const { dispatch } = useContext(StoreContext);
   return <button onClick={() => dispatch({ type: "reset" })}>Reset</button>;
 };
+
+interface StoreContextType {
+  store: CounterStore;
+  dispatch: React.Dispatch<CounterAction>;
+}
+
+const StoreContext = createContext<StoreContextType>({
+  store: storeInitalState,
+  dispatch: (action) => {},
+});
 
 const ReducerCounter = () => {
   const [store, dispatch] = useReducer(reducer, storeInitalState);
 
   return (
-    <div>
-      <CountDisplay store={store} />
-      <IncrementButton dispatch={dispatch} />
-      <DecrementButton dispatch={dispatch} />
-      <ResetButton dispatch={dispatch} />
-    </div>
+    <StoreContext.Provider value={{ store: store, dispatch: dispatch }}>
+      <CountDisplay />
+      <IncrementButton />
+      <DecrementButton />
+      <ResetButton />
+    </StoreContext.Provider>
   );
 };
 
