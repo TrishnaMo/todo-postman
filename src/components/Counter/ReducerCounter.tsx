@@ -22,16 +22,37 @@ const reducer = (state: CounterStore, action: CounterAction) => {
   }
 };
 
+interface ButtonProps {
+  //   dispatch: (action: CounterAction) => void;
+  dispatch: React.Dispatch<CounterAction>;
+}
+
+const CountDisplay: React.FC<{ store: CounterStore }> = ({ store }) => {
+  return <div>{store.count}</div>;
+};
+
+const IncrementButton: React.FC<ButtonProps> = ({ dispatch }) => {
+  return <button onClick={() => dispatch({ type: "increment" })}>+</button>;
+};
+
+const DecrementButton: React.FC<ButtonProps> = ({ dispatch }) => {
+  return <button onClick={() => dispatch({ type: "decrement" })}>-</button>;
+};
+
+const ResetButton: React.FC<ButtonProps> = ({ dispatch }) => {
+  return <button onClick={() => dispatch({ type: "reset" })}>Reset</button>;
+};
 
 const ReducerCounter = () => {
   const [store, dispatch] = useReducer(reducer, storeInitalState);
+
   return (
     <div>
-    {store.count}
-    <button onClick={() => dispatch({type: 'increment'})}>+</button>
-    <button onClick={() => dispatch({type: 'decrement'})}>-</button>
-    <button onClick={() => dispatch({type: 'reset'})}>Reset</button>
-  </div>
+      <CountDisplay store={store} />
+      <IncrementButton dispatch={dispatch} />
+      <DecrementButton dispatch={dispatch} />
+      <ResetButton dispatch={dispatch} />
+    </div>
   );
 };
 

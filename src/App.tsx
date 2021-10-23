@@ -6,7 +6,6 @@ import HomeScreen from "./components/HomeScreen/index";
 const App = () => {
   return (
     <>
-      <StateCounter />
       <ReducerCounter />
       <HomeScreen />
     </>
