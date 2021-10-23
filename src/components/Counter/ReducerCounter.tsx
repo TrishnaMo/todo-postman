@@ -11,14 +11,15 @@ interface CounterAction {
 const storeInitalState: CounterStore = { count: 0 };
 
 const reducer = (state: CounterStore, action: CounterAction) => {
-  if (action.type === "increment") {
-    return { count: state.count + 1 };
-  } else if (action.type === "decrement") {
-    return { count: state.count - 1 };
-  } else if (action.type === "reset") {
-    return { count: 0 };
-  } else {
-    throw new Error();
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1 };
+    case "decrement":
+      return { count: state.count - 1 };
+    case "reset":
+      return { count: 0 };
+    default:
+      throw new Error();
   }
 };
 
